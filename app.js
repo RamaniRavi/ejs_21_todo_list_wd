@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const app = express();
 app.set('view engine', 'ejs');
 
+app.use(bodyParser.urlencoded({extended: true}));
+var items = ["Buy Food","Cook Food"];
+
 app.get("/", function (req, res) {
     var today = new Date();
    
@@ -15,8 +18,16 @@ app.get("/", function (req, res) {
     };
     var day = today.toLocaleDateString("en-US",options);
 
-    res.render("list", {keyday: day});
+    res.render("list", {keyday: day , listitem: items});
 });
+
+app.post("/", function(req,res){
+    item = req.body.iitem;
+    items.push(item);
+
+    res.redirect("/")
+})
+
 
 app.listen(3000, function (req, res) {
     console.log("server is running on 3000 port");
