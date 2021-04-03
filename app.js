@@ -7,7 +7,8 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-var items = ["Buy Food","Cook Food"];
+let items = ["Buy Food","Cook Food"];
+let workitems = []; 
 
 app.get("/", function (req, res) {
     var today = new Date();
@@ -19,7 +20,7 @@ app.get("/", function (req, res) {
     };
     var day = today.toLocaleDateString("en-US",options);
 
-    res.render("list", {keyday: day , listitem: items});
+    res.render("list", {listTitle: day , listitem: items});
 });
 
 app.post("/", function(req,res){
@@ -27,6 +28,16 @@ app.post("/", function(req,res){
     items.push(item);
 
     res.redirect("/")
+});
+
+app.get("/work", function(req,res){
+    res.render("list",{listTitle: "Work List", listitem: workitems});
+});
+
+app.post("/work",function(req,res){
+    let item = req.body.listitem;
+    workitems.push(item);
+    res.redirect(workitems);
 })
 
 
